@@ -7,4 +7,13 @@
 
 (defn get-graphs
   []
-  (sybils/get-all-graphs))
+  (map
+    (fn[x]
+      (let [graph (get x "graph")]
+        { :id (get-in graph [:metadata :id])
+          :data (get graph :data)}))
+  (sybils/get-all-graphs)))
+
+(defn remove-graph
+  [id]
+  (do (println (str "-------------------------" id "------------------------"))(sybils/remove-graph (str id))))

@@ -16,8 +16,10 @@
 
 (defroutes api-and-site-routes
   (POST "/graphs/new" [name] (do (content/create-graph name)(resp/redirect "/graphs")))
-  (GET "/" [] (layout/form "Home"))
+  (GET "/home" [] (layout/form "Home"))
   (GET "/graphs" [] (layout/graphs-view "Graphs" (content/get-graphs)))
+  (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))
+  (route/resources "/")
   (route/not-found "Not Found"))
 
 (def application
