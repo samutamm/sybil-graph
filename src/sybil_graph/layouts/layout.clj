@@ -1,6 +1,7 @@
 (ns sybil_graph.layouts.layout
  (:require [hiccup.page :refer [html5 include-css include-js]]
-           [hiccup.form :refer [form-to, text-field, submit-button]]))
+           [hiccup.form :refer [form-to, text-field, submit-button]]
+           [hiccup.element :refer [link-to]]))
 
 (defn form
   [title & content]
@@ -10,8 +11,9 @@
       (include-css "styles.css")
       (include-js "js/script.js")
       [:body
+        (link-to "https://github.com/samutamm/sybil-graph" "Github")
         [:div
-          [:h1 "Hiccup"]
+          [:h1 "Sybil-graph simulator"]
           (form-to {:enctype "application/x-www-form-urlencoded"}
             [:post "/graphs/new"]
            (text-field "name")
@@ -32,6 +34,7 @@
       (include-css "styles.css")
       (include-js "js/script.js")
       [:body
+        (link-to "https://github.com/samutamm/sybil-graph" "Github")
         [:div
          (for [g graphs]
            [:div {:class "graph-div"}

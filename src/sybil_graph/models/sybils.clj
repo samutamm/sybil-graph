@@ -8,15 +8,14 @@
 (def get-all-graphs-query "MATCH (graph:Graph) RETURN graph;")
 
 (def remove-graph-query "MATCH (g:Graph) where ID(g) = {id}
-                        OPTIONAL MATCH (g)-[r]-()
-                        DELETE r,g;")
+                        OPTIONAL MATCH (g)-[r]-(n)
+                        DELETE r,g,n;")
 
-(def add-sybils-query "MATCH (graph:Graph)
-                          WHERE graph.name = {graphName}
-                          CREATE (node:NormalNode {id: 1}),
-                          (org)-[:HAS_CHANNEL]->(c)")
-
-
+(def add-node-to-graph-query "MATCH (g:Graph)
+                              WHERE g.name = {graphName}
+                              CREATE (n:Node {id: {id}, sybil: {isSybil}}),
+                              (g)-[:HAS_NODE]->(n),
+                              (n)-[:BELONGS_TO]->(g);")
 
 (defn create-graph
   [name]
@@ -32,7 +31,9 @@
   (let [params {:id (Integer/parseInt id)}]
     (cy/tquery neo4j/conn remove-graph-query params)))
 
-(defn add-sybils
-  []
-  (let [params {:organization "asda"}]
-    (cy/tquery neo4j/conn add-sybils-query params)))
+(defn add-node-to-graph
+  [name id isSybil]
+  (let [params {:graphName name
+                :id id
+                :isSybil isSybil}]
+  (cy/tquery neo4j/conn add-node-to-graph-query params)))
