@@ -1,7 +1,7 @@
 (defproject sybil-graph "0.1.0-SNAPSHOT"
   :description "Sybil Graph experiments"
   :min-lein-version "2.7.1"
-  :url "http://example.com/FIXME"
+  :uberjar-name "sybil-standalone.jar"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
