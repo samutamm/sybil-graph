@@ -8,14 +8,20 @@
 (def get-all-graphs-query "MATCH (graph:Graph) RETURN graph;")
 
 (def remove-graph-query "MATCH (g:Graph) where ID(g) = {id}
-                        OPTIONAL MATCH (g)-[r]-(n)
-                        DELETE r,g,n;")
+                        OPTIONAL MATCH (g)-[r1]-(n)-[r2]-()
+                        DELETE r2,r1,g,n;")
 
 (def add-node-to-graph-query "MATCH (g:Graph)
                               WHERE g.name = {graphName}
                               CREATE (n:Node {id: {id}, sybil: {isSybil}}),
                               (g)-[:HAS_NODE]->(n),
                               (n)-[:BELONGS_TO]->(g);")
+
+(def create-relations-query "MATCH (g:Graph)-[:HAS_NODE]->(n), (g:Graph)-[:HAS_NODE]->(otherNode)
+                            WHERE g.name = {graphName}
+                            AND n.id = {nodeId}
+                            AND otherNode.id IN {otherIds}
+                            CREATE UNIQUE (n)-[:CONNECT]->(otherNode), (otherNode)-[:CONNECT]->(n);")
 
 (defn create-graph
   [name]
@@ -37,3 +43,9 @@
                 :id id
                 :isSybil isSybil}]
   (cy/tquery neo4j/conn add-node-to-graph-query params)))
+
+(defn create-relations
+  [name nodeId otherIds]
+  (cy/tquery neo4j/conn create-relations-query {:graphName name
+                                                 :nodeId nodeId
+                                                 :otherIds otherIds}))

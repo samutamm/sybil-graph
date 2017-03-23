@@ -10,8 +10,7 @@
             [ring.middleware.cors             :refer [wrap-cors]]
             [compojure.route                  :as route]
             [sybil_graph.layouts.layout       :as layout]
-            [sybil_graph.controllers.content  :as content]
-            [clojure.tools.logging            :as log])
+            [sybil_graph.controllers.content  :as content])
             (:gen-class))
 
 (defroutes api-and-site-routes

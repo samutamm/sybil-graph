@@ -27,10 +27,9 @@
   (loop [i 1]
     (let [randoms (generate-random-ids i n)]
       (do
-        (println (str "ids: " randoms))
+        (sybils/create-relations graphName i randoms)
         (if (not (= i n))
           (recur (inc i)))))))
-          ; NOW ADD THESE RELATIONS TO GRAPH
 
 (defn create-graph
   [name]
