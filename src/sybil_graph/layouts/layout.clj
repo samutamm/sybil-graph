@@ -16,8 +16,15 @@
           [:h1 "Sybil-graph simulator"]
           (form-to {:enctype "application/x-www-form-urlencoded"}
             [:post "/graphs/new"]
+           [:p "Graph name"]
            (text-field "name")
-           (submit-button {:name "submit"} "Create"))]]]))
+           [:p "Max number of relations for normal nodes."]
+           (text-field {:type "number" :min 1 :max 20 } "nodes")
+           [:p "Max number of relations for sybil nodes."]
+           (text-field {:type "number" :min 1 :max 9 :id "sybils"} "sybils")
+           [:p "Attack edges."]
+           (text-field {:type "number" :min 1 :max 9 :id "sybils"} "attackedges")
+           (submit-button {:name "submit" :id "submit-button"} "Create"))]]]))
 
 (defn button
   [path text]

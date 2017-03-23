@@ -14,7 +14,11 @@
             (:gen-class))
 
 (defroutes api-and-site-routes
-  (POST "/graphs/new" [name] (do (content/create-graph name)(resp/redirect "/graphs")))
+  (POST "/graphs/new" [name nodes sybils attackedges]
+    (do  (content/create-graph name
+          (Integer/parseInt nodes)
+          (Integer/parseInt sybils)
+          (Integer/parseInt attackedges))(resp/redirect "/graphs")))
   (GET "/" [] (layout/form "Home"))
   (GET "/graphs" [] (layout/graphs-view "Graphs" (content/get-graphs)))
   (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))

@@ -49,3 +49,9 @@
   (cy/tquery neo4j/conn create-relations-query {:graphName name
                                                  :nodeId nodeId
                                                  :otherIds otherIds}))
+
+(defn add-attack-edge
+  [name from to]
+  (cy/tquery neo4j/conn create-relations-query {:graphName name
+                                                 :nodeId from
+                                                 :otherIds [to]}))
