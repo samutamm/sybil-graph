@@ -5,7 +5,9 @@
 
 (def create-graph-query "CREATE (graph:Graph {name: {name}}) RETURN graph;")
 
-(def get-all-graphs-query "MATCH (graph:Graph) RETURN graph;")
+(def get-all-graphs-query "MATCH (graph:Graph)-[:HAS_NODE]->(normalNode)
+                            WHERE normalNode.sybil = false
+                            RETURN graph, COUNT(normalNode) as normalNodes;")
 
 (def remove-graph-query "MATCH (g:Graph) where ID(g) = {id}
                         OPTIONAL MATCH (g)-[r1]-(n)-[r2]-()
@@ -24,8 +26,9 @@
                             CREATE UNIQUE (n)-[:CONNECT]->(otherNode), (otherNode)-[:CONNECT]->(n);")
 
 (defn create-graph
-  [name]
-  (let [params {:name (str name)}]
+  [name nodeCount]
+  (let [params {:name (str name)
+                :nodes nodeCount}]
     (cy/tquery neo4j/conn create-graph-query params)))
 
 (defn get-all-graphs
@@ -55,3 +58,5 @@
   (cy/tquery neo4j/conn create-relations-query {:graphName name
                                                  :nodeId from
                                                  :otherIds [to]}))
+
+ 

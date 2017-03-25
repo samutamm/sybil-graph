@@ -1,6 +1,6 @@
 (ns sybil_graph.layouts.layout
  (:require [hiccup.page :refer [html5 include-css include-js]]
-           [hiccup.form :refer [form-to, text-field, submit-button]]
+           [hiccup.form :refer [form-to, text-field, submit-button, hidden-field]]
            [hiccup.element :refer [link-to]]))
 
 (defn form
@@ -39,6 +39,7 @@
     [:head
       [:title title]
       (include-css "styles.css")
+      (include-js "https://code.jquery.com/jquery-3.2.1.slim.min.js")
       (include-js "js/script.js")
       [:body
         (link-to "https://github.com/samutamm/sybil-graph" "Github")
@@ -46,4 +47,24 @@
          (for [g graphs]
            [:div {:class "graph-div"}
             [:p (str "ID: "(:id g) ", NAME: " (get-in g [:data :name])) ]
+            [:div {:class "experiments"}
+              (form-to {:enctype "application/x-www-form-urlencoded"}
+                [:post (str "/randomWalk/" (:id g))]
+                  [:p "Try with how many seeds"]
+                  (text-field "seeds")
+                  [:p "How many steps? Write log or give an integer for factor. (log n, 1*n, 2*n...)"]
+                  (text-field "stepfactor")
+                  (hidden-field "nodes" (:normalNodes g))
+                  (hidden-field "graphName" (get-in g [:data :name]))
+                (submit-button {:name "submit"} "Test random walk"))]
             [:span (button (str "/delete/" (:id g)) "Delete")]])]]]))
+
+(defn randomwalk-results
+  [title]
+  (html5 {:lang "en"}
+    [:head
+      [:title title]
+      (include-css "styles.css")
+      (include-js "js/script.js")
+      [:body
+        [:p "Random walks results" ]]]))

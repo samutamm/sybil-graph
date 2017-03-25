@@ -48,7 +48,7 @@
         sybilFirst 101
         sybilLast 110]
     (do
-      (sybils/create-graph name)
+      (sybils/create-graph name (inc (- lastId firstId)))
       (create-n-nodes {:graphName name
                        :firstId firstId
                        :lastId lastId
@@ -75,10 +75,11 @@
 (defn get-graphs
   []
   (map
-    (fn[x]
-      (let [graph (get x "graph")]
+    (fn[graphObject]
+      (let [graph (get graphObject "graph")]
         { :id (get-in graph [:metadata :id])
-          :data (get graph :data)}))
+          :data (get graph :data)
+          :nodes (get graphObject "normalNodes")}))
   (sybils/get-all-graphs)))
 
 (defn remove-graph

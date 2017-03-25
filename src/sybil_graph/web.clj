@@ -10,7 +10,8 @@
             [ring.middleware.cors             :refer [wrap-cors]]
             [compojure.route                  :as route]
             [sybil_graph.layouts.layout       :as layout]
-            [sybil_graph.controllers.content  :as content])
+            [sybil_graph.controllers.content  :as content]
+            [sybil_graph.controllers.randomwalk  :as randomwalk])
             (:gen-class))
 
 (defroutes api-and-site-routes
@@ -21,7 +22,13 @@
           (Integer/parseInt attackedges))(resp/redirect "/graphs")))
   (GET "/" [] (layout/form "Home"))
   (GET "/graphs" [] (layout/graphs-view "Graphs" (content/get-graphs)))
+  (GET "/randomWalks/:id" [id] (layout/randomwalk-results "Random walk results"))
   (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))
+  (POST "/randomWalk/:graphId" [graphId seeds stepfactor nodes graphName]
+    (do
+      (randomwalk/simulate-randomwalk {:graphId graphId :seeds seeds :stepfactor stepfactor
+                                       :nodes nodes :graphName graphName})
+      (resp/redirect (str "/randomWalks/" graphId) )))
   (route/resources "/")
   (route/not-found "Not Found"))
 
