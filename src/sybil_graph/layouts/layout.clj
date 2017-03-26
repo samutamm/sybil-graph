@@ -41,7 +41,7 @@
       (include-css "styles.css")
       (include-js "https://code.jquery.com/jquery-3.2.1.slim.min.js")
       (include-js "js/script.js")
-      [:body
+      [:body {:onLoad "addListeners();"}
         (link-to "https://github.com/samutamm/sybil-graph" "Github")
         [:div
          (for [g graphs]
@@ -54,17 +54,20 @@
                   (text-field "seeds")
                   [:p "How many steps? Write log or give an integer for factor. (log n, 1*n, 2*n...)"]
                   (text-field "stepfactor")
-                  (hidden-field "nodes" (:normalNodes g))
+                  (hidden-field "nodes" (:nodes g))
                   (hidden-field "graphName" (get-in g [:data :name]))
                 (submit-button {:name "submit"} "Test random walk"))]
             [:span (button (str "/delete/" (:id g)) "Delete")]])]]]))
 
 (defn randomwalk-results
-  [title]
+  [title randomwalk]
   (html5 {:lang "en"}
     [:head
       [:title title]
       (include-css "styles.css")
       (include-js "js/script.js")
       [:body
-        [:p "Random walks results" ]]]))
+        [:p "Random walks results" ]
+        [:p (:sybils randomwalk)]
+        [:p (:impasses randomwalk)]
+        [:p (:sybilPercent randomwalk)]]]))

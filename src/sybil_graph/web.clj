@@ -7,7 +7,8 @@
             [ring.adapter.jetty               :as ring]
             [ring.util.response               :as resp]
             [ring.middleware.json             :as rj]
-            [ring.middleware.cors             :refer [wrap-cors]]
+            [ring.middleware.reload           :refer [wrap-reload]]
+            [ring.middleware.resource         :refer [wrap-resource]]
             [compojure.route                  :as route]
             [sybil_graph.layouts.layout       :as layout]
             [sybil_graph.controllers.content  :as content]
@@ -22,18 +23,20 @@
           (Integer/parseInt attackedges))(resp/redirect "/graphs")))
   (GET "/" [] (layout/form "Home"))
   (GET "/graphs" [] (layout/graphs-view "Graphs" (content/get-graphs)))
-  (GET "/randomWalks/:id" [id] (layout/randomwalk-results "Random walk results"))
+  (GET "/randomWalks/:id" [id]
+    (layout/randomwalk-results "Random walk results" (randomwalk/get-randomwalk id)))
   (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))
   (POST "/randomWalk/:graphId" [graphId seeds stepfactor nodes graphName]
-    (do
-      (randomwalk/simulate-randomwalk {:graphId graphId :seeds seeds :stepfactor stepfactor
-                                       :nodes nodes :graphName graphName})
-      (resp/redirect (str "/randomWalks/" graphId) )))
+    (let [randomwalkId (randomwalk/do-randomwalk {:graphId graphId :seeds seeds :stepfactor stepfactor
+                                                :nodes nodes :graphName graphName})]
+    (resp/redirect (str "/randomWalks/" randomwalkId))))
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (def application
   (-> api-and-site-routes
+    (wrap-reload)
+    (wrap-resource "public")
     (handler/api)
     (rj/wrap-json-response)
     (rj/wrap-json-body)))

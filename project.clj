@@ -11,6 +11,7 @@
                  [ring/ring-jetty-adapter "1.4.0"]
                  [clojurewerkz/neocons "3.1.0"]
                  [ring/ring-json "0.3.1"]
+                 [ring/ring-devel "1.6.0-RC1"]
                  [ring-cors "0.1.6"]
                  [environ "1.0.0"]
                  [hiccup "1.0.5"]

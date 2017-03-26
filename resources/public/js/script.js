@@ -1,6 +1,7 @@
 
 function addListeners() {
-  $("graph-div").click(function(params) {
+  console.log("Setting listeners");
+  $(".graph-div").click(function(params) {
     console.log(params);
   });
 }

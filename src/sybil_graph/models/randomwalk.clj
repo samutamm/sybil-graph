@@ -12,6 +12,13 @@
                                 WHERE graph.name = {graphName}
                                 SET node.visited = false;")
 
+(def save-randomwalk-query "MATCH (graph:Graph) WHERE ID(graph) = 1447
+                            CREATE (rw:RandomWalk {sybils: {sybils}, impasses: {impasses},
+                            sybilPercent: {sybilPercent}, impassePercent: {impassePercent}}),
+                            (graph)-[:HAS_RANDOMWALK]->(rw) RETURN rw as randomwalk;")
+
+(def get-randomwalk-query "MATCH (rw:RandomWalk) WHERE ID(rw) = {randomwalkId} RETURN rw as randomwalk;")
+
 (defn get-neighbors
   [graphName nodeId]
   (first (cy/tquery neo4j/conn get-neighbors-query {:graphName graphName :nodeId nodeId})))
@@ -19,3 +26,11 @@
 (defn clean-visited-flags
   [graphName]
   (cy/tquery neo4j/conn clean-visited-flags-query {:graphName graphName}))
+
+(defn save-randomwalk
+  [params]
+  (first (cy/tquery neo4j/conn save-randomwalk-query params)))
+
+(defn get-randomwalk-by-id
+  [id]
+  (first (cy/tquery neo4j/conn get-randomwalk-query {:randomwalkId id})))
