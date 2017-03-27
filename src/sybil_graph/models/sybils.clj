@@ -3,7 +3,7 @@
             [clojurewerkz.neocons.rest.cypher :as cy]
             [sybil_graph.models.neo4j         :as neo4j]))
 
-(def create-graph-query "CREATE (graph:Graph {name: {name}}) RETURN graph;")
+(def create-graph-query "CREATE (graph:Graph {name: {name}, trust: 0, tempTrust: 0}) RETURN graph;")
 
 (def get-all-graphs-query "MATCH (graph:Graph)-[:HAS_NODE]->(normalNode)
                             WHERE normalNode.sybil = false
@@ -58,5 +58,3 @@
   (cy/tquery neo4j/conn create-relations-query {:graphName name
                                                  :nodeId from
                                                  :otherIds [to]}))
-
- 
