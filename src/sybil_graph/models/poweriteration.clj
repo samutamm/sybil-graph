@@ -1,4 +1,4 @@
-(ns sybil_graph.models.powerit
+(ns sybil_graph.models.poweriteration
   (:require [clojurewerkz.neocons.rest        :as nr]
             [clojurewerkz.neocons.rest.cypher :as cy]
             [sybil_graph.models.neo4j         :as neo4j]))
