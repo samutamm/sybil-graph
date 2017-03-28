@@ -9,9 +9,9 @@
                             WHERE normalNode.sybil = false
                             RETURN graph, COUNT(normalNode) as normalNodes;")
 
-(def remove-graph-query "MATCH (g:Graph) where ID(g) = {id}
-                        OPTIONAL MATCH (g)-[r1]-(n)-[r2]-()
-                        DELETE r2,r1,g,n;")
+(def remove-graph-query "MATCH (g:Graph)-[]->(x)
+                        where ID(g) = {id}
+                        DETACH DELETE x, g")
 
 (def add-node-to-graph-query "MATCH (g:Graph)
                               WHERE g.name = {graphName}

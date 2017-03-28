@@ -27,7 +27,7 @@
     (layout/randomwalk-results "Random walk results" (randomwalk/get-randomwalk id)))
   (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))
   (POST "/randomWalk/:graphId" [graphId seeds stepfactor nodes graphName]
-    (let [randomwalkId (randomwalk/do-randomwalk {:graphId graphId :seeds seeds :stepfactor stepfactor
+    (let [randomwalkId (randomwalk/do-randomwalk {:graphId (Integer/parseInt graphId) :seeds seeds :stepfactor stepfactor
                                                 :nodes nodes :graphName graphName})]
     (resp/redirect (str "/randomWalks/" randomwalkId))))
   (route/resources "/")

@@ -19,11 +19,11 @@
            [:p "Graph name"]
            (text-field "name")
            [:p "Max number of relations for normal nodes."]
-           (text-field {:type "number" :min 1 :max 20 } "nodes")
+           (text-field {:type "number" :min 1 :max 50 } "nodes")
            [:p "Max number of relations for sybil nodes."]
-           (text-field {:type "number" :min 1 :max 9 :id "sybils"} "sybils")
+           (text-field {:type "number" :min 1 :max 50 :id "sybils"} "sybils")
            [:p "Attack edges."]
-           (text-field {:type "number" :min 1 :max 9 :id "sybils"} "attackedges")
+           (text-field {:type "number" :min 1 :max 50 :id "sybils"} "attackedges")
            (submit-button {:name "submit" :id "submit-button"} "Create"))]]]))
 
 (defn button
@@ -68,6 +68,6 @@
       (include-js "js/script.js")
       [:body
         [:p "Random walks results" ]
-        [:p (:sybils randomwalk)]
-        [:p (:impasses randomwalk)]
-        [:p (:sybilPercent randomwalk)]]]))
+        [:p (str "Sybils: " (:sybils randomwalk))]
+        [:p (str "impasses: "(:impasses randomwalk))]
+        [:p (str "sybilpercent: "(:sybilPercent randomwalk))]]]))

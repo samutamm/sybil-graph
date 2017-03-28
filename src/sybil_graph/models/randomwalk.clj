@@ -12,7 +12,7 @@
                                 WHERE graph.name = {graphName}
                                 SET node.visited = false;")
 
-(def save-randomwalk-query "MATCH (graph:Graph) WHERE ID(graph) = 1447
+(def save-randomwalk-query "MATCH (graph:Graph) WHERE ID(graph) = {graphId}
                             CREATE (rw:RandomWalk {sybils: {sybils}, impasses: {impasses},
                             sybilPercent: {sybilPercent}, impassePercent: {impassePercent}}),
                             (graph)-[:HAS_RANDOMWALK]->(rw) RETURN rw as randomwalk;")

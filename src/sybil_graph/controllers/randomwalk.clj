@@ -1,6 +1,12 @@
 (ns sybil_graph.controllers.randomwalk
  (:require [sybil_graph.models.randomwalk    :as randomwalk]))
 
+(defn clean-and-return
+  [graphName i currentNode]
+  (do
+    (randomwalk/clean-visited-flags graphName)
+    {:stepsTaken i :node currentNode}))
+
 (defn walk-n-steps
   [graphName startId steps]
   (loop [i 0
@@ -8,13 +14,11 @@
          currentNode nil]
       (let [neighbors (get (randomwalk/get-neighbors graphName currentNodeId) "neighbors" )]
         (cond
-          (= (count neighbors) 0) {:stepsTaken i :node currentNode}
+          (= (count neighbors) 0) (clean-and-return graphName i currentNode)
           (< i steps) (let [next (nth neighbors (rand-int (count neighbors)))
                              nextId  (get-in next [:data :id])]
                          (recur (inc i) nextId next))
-          :else (do
-                  (randomwalk/clean-visited-flags graphName)
-                  {:stepsTaken i :node currentNode})))))
+          :else (clean-and-return graphName i currentNode)))))
 
 (defn get-nodes-by-factor
   [nodes factor]
@@ -43,7 +47,8 @@
   (let [result (simulate-randomwalk params)
         sybils (count (filter (fn[r] (get-in r [:node :sybil])) result))
         impasses (count (filter (fn[r] (:impasse r)) result))
-        toSave {:sybils sybils
+        toSave {:graphId (:graphId params)
+                :sybils sybils
                 :impasses impasses
                 :sybilPercent (/ sybils (count result))
                 :impassePercent (/ impasses (count result))}]
