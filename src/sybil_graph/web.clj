@@ -12,7 +12,8 @@
             [compojure.route                  :as route]
             [sybil_graph.layouts.layout       :as layout]
             [sybil_graph.controllers.content  :as content]
-            [sybil_graph.controllers.randomwalk  :as randomwalk])
+            [sybil_graph.controllers.randomwalk  :as randomwalk]
+            [sybil_graph.controllers.poweriteration  :as power])
             (:gen-class))
 
 (defroutes api-and-site-routes
@@ -25,11 +26,18 @@
   (GET "/graphs" [] (layout/graphs-view "Graphs" (content/get-graphs)))
   (GET "/randomWalks/:id" [id]
     (layout/randomwalk-results "Random walk results" (randomwalk/get-randomwalk id)))
+  (GET "/poweriteration/:id" [id]
+    (layout/poweriteration-results "poweriteration results" nil)) ;TODO resultpage
   (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))
   (POST "/randomWalk/:graphId" [graphId seeds stepfactor nodes graphName]
     (let [randomwalkId (randomwalk/do-randomwalk {:graphId (Integer/parseInt graphId) :seeds seeds :stepfactor stepfactor
                                                 :nodes nodes :graphName graphName})]
     (resp/redirect (str "/randomWalks/" randomwalkId))))
+  (POST "/poweriteration/:id" [id seeds graphName]
+    (let [iterations (Math/round (Math/log 100))
+          poweriterationId (power/start-iterations
+            {:iterations iterations :graphName graphName :seeds (Integer/parseInt seeds)})]
+    (resp/redirect (str "/poweriteration/19")))) ;TODO add correct id
   (route/resources "/")
   (route/not-found "Not Found"))
 

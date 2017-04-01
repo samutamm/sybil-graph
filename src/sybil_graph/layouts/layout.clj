@@ -48,6 +48,7 @@
            [:div {:class "graph-div"}
             [:p (str "ID: "(:id g) ", NAME: " (get-in g [:data :name])) ]
             [:div {:class "experiments"}
+              [:h1 "Randomwalk"]
               (form-to {:enctype "application/x-www-form-urlencoded"}
                 [:post (str "/randomWalk/" (:id g))]
                   [:p "Try with how many seeds"]
@@ -57,6 +58,15 @@
                   (hidden-field "nodes" (:nodes g))
                   (hidden-field "graphName" (get-in g [:data :name]))
                 (submit-button {:name "submit"} "Test random walk"))]
+              [:div {:class "experiments"}
+                [:h1 "Poweriteration"]
+                (form-to {:enctype "application/x-www-form-urlencoded"}
+                  [:post (str "/poweriteration/" (:id g))]
+                    [:p "How many seeds"]
+                    (text-field "seeds")
+                    (hidden-field "graphName" (get-in g [:data :name]))
+                  (submit-button {:name "submit"} "Start poweriteration"))]
+            [:p ""]
             [:span (button (str "/delete/" (:id g)) "Delete")]])]]]))
 
 (defn randomwalk-results
@@ -71,3 +81,13 @@
         [:p (str "Sybils: " (:sybils randomwalk))]
         [:p (str "impasses: "(:impasses randomwalk))]
         [:p (str "sybilpercent: "(:sybilPercent randomwalk))]]]))
+
+(defn poweriteration-results
+  [title poweriteration]
+  (html5 {:lang "en"}
+    [:head
+      [:title title]
+      (include-css "styles.css")
+      (include-js "js/script.js")
+      [:body
+        [:p "Poweriteration results" ]]]))

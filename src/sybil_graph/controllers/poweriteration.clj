@@ -27,15 +27,15 @@
             (recur (inc id))))))
     (power/set-temptrust-to-trust (:graphName params))))
 
-(defn iterate-log
+(defn start-iterations
   [params]
   (do
     (initialize-seeds
       {:seeds (:seeds params) :lastNormalNodeId 100 :graphName (:graphName params) :initTrust 648})
-    (let [iterations (Math/round (Math/log 100))]
+    (let [iterations (:iterations params)]
       (loop [i 0]
-      (if (< i iterations)
-        (do
-          (println (str "ITERATION: " i))
-          (poweriteration {:graphName (:graphName params)})
-          (recur (inc i))))))))
+        (if (< i iterations)
+          (do
+            (println (str "ITERATION: " i))
+            (poweriteration {:graphName (:graphName params)})
+            (recur (inc i))))))))
