@@ -10,6 +10,7 @@
             [ring.middleware.reload           :refer [wrap-reload]]
             [ring.middleware.resource         :refer [wrap-resource]]
             [compojure.route                  :as route]
+            [sybil_graph.config               :as config]
             [sybil_graph.layouts.layout       :as layout]
             [sybil_graph.controllers.content  :as content]
             [sybil_graph.controllers.randomwalk  :as randomwalk]
@@ -34,7 +35,7 @@
                                                 :nodes nodes :graphName graphName})]
     (resp/redirect (str "/randomWalks/" randomwalkId))))
   (POST "/poweriteration/:id" [id seeds graphName]
-    (let [iterations (Math/round (Math/log 100))
+    (let [iterations (Math/round (Math/log (:lastId config/default-config)))
           poweriterationId (power/start-iterations
             {:iterations iterations :graphName graphName :seeds (Integer/parseInt seeds)})]
     (resp/redirect (str "/poweriteration/19")))) ;TODO add correct id

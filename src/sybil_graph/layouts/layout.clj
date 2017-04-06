@@ -19,11 +19,11 @@
            [:p "Graph name"]
            (text-field "name")
            [:p "Max number of relations for normal nodes."]
-           (text-field {:type "number" :min 1 :max 50 } "nodes")
+           (text-field {:type "number" } "nodes")
            [:p "Max number of relations for sybil nodes."]
-           (text-field {:type "number" :min 1 :max 50 :id "sybils"} "sybils")
+           (text-field {:type "number" :id "sybils"} "sybils")
            [:p "Attack edges."]
-           (text-field {:type "number" :min 1 :max 50 :id "sybils"} "attackedges")
+           (text-field {:type "number" :id "sybils"} "attackedges")
            (submit-button {:name "submit" :id "submit-button"} "Create"))]]]))
 
 (defn button

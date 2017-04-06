@@ -1,5 +1,6 @@
 (ns sybil_graph.controllers.content
- (:require [sybil_graph.models.sybils     :as sybils]))
+ (:require [sybil_graph.models.sybils     :as sybils]
+           [sybil_graph.config            :as config]))
 
 (defn create-n-nodes
   [params]
@@ -43,10 +44,10 @@
 
 (defn create-graph
   [name nodesFrequency sybilsFrequency attackedges]
-  (let [firstId 1
-        lastId 100
-        sybilFirst 101
-        sybilLast 110]
+  (let [firstId (:firstId config/default-config)
+        lastId (:lastId config/default-config)
+        sybilFirst (:sybilFirst config/default-config)
+        sybilLast (:sybilLast config/default-config)] ;TODO what is the default size of sybil attacks
     (do
       (sybils/create-graph name (inc (- lastId firstId)))
       (create-n-nodes {:graphName name

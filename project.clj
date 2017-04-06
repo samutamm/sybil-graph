@@ -15,7 +15,8 @@
                  [ring-cors "0.1.6"]
                  [environ "1.0.0"]
                  [hiccup "1.0.5"]
-                 [org.clojure/tools.logging "0.3.1"]]
+                 [org.clojure/tools.logging "0.3.1"]
+                 [incanter "1.5.7"]]
   :main ^:skip-aot sybil_graph.web
   :plugins [[lein-ring "0.8.11"]
             [lein-immutant "2.0.0-alpha2"]]

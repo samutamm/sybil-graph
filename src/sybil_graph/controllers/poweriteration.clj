@@ -1,5 +1,7 @@
 (ns sybil_graph.controllers.poweriteration
- (:require [sybil_graph.models.poweriteration    :as power]))
+ (:require
+   [sybil_graph.models.poweriteration    :as power]
+   [sybil_graph.config                   :as config]))
 
 ;(initialize-seeds {:seeds 3 :lastNormalNodeId 100 :graphName "kalle" :initTrust 324})
 (defn initialize-seeds
@@ -15,8 +17,8 @@
   "Iterate all nodes and update their temporary trust. Then replace temp trust by trust."
   [params]
   (do
-    (let [firstId 1
-          lastId 110]
+    (let [firstId (:firstId config/default-config)
+          lastId (:sybilLast config/default-config)]
       (loop [id firstId]
         (if (<= id lastId)
           (let [neighbors (power/get-neighbors (:graphName params) id)
@@ -31,7 +33,8 @@
   [params]
   (do
     (initialize-seeds
-      {:seeds (:seeds params) :lastNormalNodeId 100 :graphName (:graphName params) :initTrust 648})
+      {:seeds (:seeds params) :lastNormalNodeId (:lastId config/default-config) 
+        :graphName (:graphName params) :initTrust (:initTrust config/default-config)})
     (let [iterations (:iterations params)]
       (loop [i 0]
         (if (< i iterations)

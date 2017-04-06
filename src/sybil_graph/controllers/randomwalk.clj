@@ -1,5 +1,7 @@
 (ns sybil_graph.controllers.randomwalk
- (:require [sybil_graph.models.randomwalk    :as randomwalk]))
+ (:require
+   [sybil_graph.models.randomwalk    :as randomwalk]
+   [sybil_graph.config                   :as config]))
 
 (defn clean-and-return
   [graphName i currentNode]
