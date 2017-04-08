@@ -2,6 +2,7 @@
   :description "Sybil Graph experiments"
   :min-lein-version "2.7.1"
   :uberjar-name "sybil-standalone.jar"
+  :repositories [["jitpack" "https://jitpack.io"]]
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
@@ -16,7 +17,8 @@
                  [environ "1.0.0"]
                  [hiccup "1.0.5"]
                  [org.clojure/tools.logging "0.3.1"]
-                 [incanter "1.5.7"]]
+                 [incanter "1.5.7"]
+                 [com.github.Data2Semantics/powerlaws "v0.1.0"]]
   :main ^:skip-aot sybil_graph.web
   :plugins [[lein-ring "0.8.11"]
             [lein-immutant "2.0.0-alpha2"]]

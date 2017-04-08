@@ -1,6 +1,7 @@
 (ns sybil_graph.controllers.content
  (:require [sybil_graph.models.sybils     :as sybils]
-           [sybil_graph.config            :as config]))
+           [sybil_graph.config            :as config]
+           [sybil_graph.calcul.distribution :as dist]))
 
 (defn create-n-nodes
   [params]
@@ -12,7 +13,11 @@
 
 (defn generate-random-ids
   [currentId params]
-  (let [until (inc (rand-int (:rel_frequency params)))]
+  (let [until (dist/sample-one-from-distribution "power-law"
+                { :mean (:normalDistMean config/default-config)
+                  :sd (:normalDistSD config/default-config)
+                  :max (:maxDegree config/default-config)
+                  :power (:powerlaw config/default-config)})];(inc (rand-int (:rel_frequency params)))]
     (loop [i 0
            ids []]
            (let [newRandom (+ (rand-int (- (:lastId params)(:firstId params))) (:firstId params))]
