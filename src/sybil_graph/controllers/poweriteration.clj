@@ -1,6 +1,7 @@
 (ns sybil_graph.controllers.poweriteration
  (:require
    [sybil_graph.models.poweriteration    :as power]
+   [sybil_graph.models.utils             :as utils]
    [sybil_graph.config                   :as config]))
 
 ;(initialize-seeds {:seeds 3 :lastNormalNodeId 100 :graphName "kalle" :initTrust 324})
@@ -33,7 +34,7 @@
   [params]
   (do
     (initialize-seeds
-      {:seeds (:seeds params) :lastNormalNodeId (:lastId config/default-config) 
+      {:seeds (:seeds params) :lastNormalNodeId (:lastId config/default-config)
         :graphName (:graphName params) :initTrust (:initTrust config/default-config)})
     (let [iterations (:iterations params)]
       (loop [i 0]
@@ -42,3 +43,10 @@
             (println (str "ITERATION: " i))
             (poweriteration {:graphName (:graphName params)})
             (recur (inc i))))))))
+
+(defn count-results
+  [graphName limit]
+  (count
+    (filter
+      (fn[x] (:sybil x))
+      (map (fn[x] (get-in x ["node" :data])) (utils/get-nodes graphName limit)))))

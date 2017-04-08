@@ -83,11 +83,12 @@
         [:p (str "sybilpercent: "(:sybilPercent randomwalk))]]]))
 
 (defn poweriteration-results
-  [title poweriteration]
+  [title sybils count]
   (html5 {:lang "en"}
     [:head
       [:title title]
       (include-css "styles.css")
       (include-js "js/script.js")
       [:body
-        [:p "Poweriteration results" ]]]))
+        [:p "Poweriteration results" ]
+        [:p (str count " sybils of last " sybils)]]]))

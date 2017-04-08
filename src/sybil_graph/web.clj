@@ -27,8 +27,9 @@
   (GET "/graphs" [] (layout/graphs-view "Graphs" (content/get-graphs)))
   (GET "/randomWalks/:id" [id]
     (layout/randomwalk-results "Random walk results" (randomwalk/get-randomwalk id)))
-  (GET "/poweriteration/:id" [id]
-    (layout/poweriteration-results "poweriteration results" nil)) ;TODO resultpage
+  (GET "/poweriteration/:name" [name]
+    (let [sybils (- (:sybilLast config/default-config) (:lastId config/default-config))]
+      (layout/poweriteration-results "poweriteration results" sybils (power/count-results name sybils))))
   (POST "/delete/:id" [id] (do (content/remove-graph id) (resp/redirect "/graphs") ))
   (POST "/randomWalk/:graphId" [graphId seeds stepfactor nodes graphName]
     (let [randomwalkId (randomwalk/do-randomwalk {:graphId (Integer/parseInt graphId) :seeds seeds :stepfactor stepfactor
@@ -38,7 +39,7 @@
     (let [iterations (Math/round (Math/log (:lastId config/default-config)))
           poweriterationId (power/start-iterations
             {:iterations iterations :graphName graphName :seeds (Integer/parseInt seeds)})]
-    (resp/redirect (str "/poweriteration/19")))) ;TODO add correct id
+    (resp/redirect (str "/poweriteration/" graphName))))
   (route/resources "/")
   (route/not-found "Not Found"))
 
