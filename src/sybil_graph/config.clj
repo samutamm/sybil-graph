@@ -7,8 +7,8 @@
     :sybilFirst 1001
     :sybilLast 1100
     :initTrust 1248
-    :normalDistMean 10
-    :normalDistSD 3
+    :normalDistMean 6
+    :normalDistSD 2
     :powerlaw 2
     :maxDegree 200
     })
@@ -23,7 +23,7 @@
     :normalDistMean 10
     :normalDistSD 3
     :powerlaw 2
-    :maxDegree 200
+    :maxDegree 300
     })
 
 (def default-config

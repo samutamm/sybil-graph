@@ -13,11 +13,11 @@
 
 (defn generate-random-ids
   [currentId params]
-  (let [until (dist/sample-one-from-distribution "power-law"
+  (let [until (dist/sample-one-from-distribution "normal-distribution"
                 { :mean (:normalDistMean config/default-config)
                   :sd (:normalDistSD config/default-config)
                   :max (:maxDegree config/default-config)
-                  :power (:powerlaw config/default-config)})];(inc (rand-int (:rel_frequency params)))]
+                  :power (:powerlaw config/default-config)})]
     (loop [i 0
            ids []]
            (let [newRandom (+ (rand-int (- (:lastId params)(:firstId params))) (:firstId params))]
@@ -61,16 +61,14 @@
                        :isSybil false})
       (create-relations-to-nodes {:graphName name
                                   :firstId firstId
-                                  :lastId lastId
-                                  :rel_frequency nodesFrequency})
+                                  :lastId lastId})
       (create-n-nodes {:graphName name
                        :firstId sybilFirst
                        :lastId sybilLast
                        :isSybil true})
       (create-relations-to-nodes {:graphName name
                                   :firstId sybilFirst
-                                  :lastId sybilLast
-                                  :rel_frequency sybilsFrequency})
+                                  :lastId sybilLast })
       (add-attack-edges {:graphName name
                         :firstId firstId
                         :lastId lastId

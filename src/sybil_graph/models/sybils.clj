@@ -25,6 +25,9 @@
                             AND otherNode.id IN {otherIds}
                             CREATE UNIQUE (n)-[:CONNECT]->(otherNode), (otherNode)-[:CONNECT]->(n);")
 
+(def delete-all-query "MATCH (n)
+                      DETACH DELETE n;")
+
 (defn create-graph
   [name nodeCount]
   (let [params {:name (str name)
@@ -58,3 +61,7 @@
   (cy/tquery neo4j/conn create-relations-query {:graphName name
                                                  :nodeId from
                                                  :otherIds [to]}))
+
+(defn delete-all
+  []
+  (cy/tquery neo4j/conn delete-all-query {}))

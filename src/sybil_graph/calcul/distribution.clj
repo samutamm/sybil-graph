@@ -33,7 +33,7 @@
 (defn sample-one-from-distribution
   [dist params]
   (cond
-    (= dist "normal-distribution") (stats/sample-normal 1 :mean (:mean params) :sd (:sd params))
+    (= dist "normal-distribution") (int (stats/sample-normal 1 :mean (:mean params) :sd (:sd params)))
     (= dist "power-law") (generate-one-from-powerlaw (:max params) (:power params))))
 
 (def default-params
